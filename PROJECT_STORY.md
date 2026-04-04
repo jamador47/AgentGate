@@ -733,14 +733,34 @@ AgentGate makes that future possible.
 
 ---
 
+## Bonus Blog Post
+
+### The Moment Everything Clicked: Building Zero-Trust AI with Auth0
+
+I'll be honest - Day 2 of this hackathon almost broke me.
+
+My AI agent was calling the Gmail API, but getting 401 errors. I had the Auth0 session token, the user was authenticated, and everything *should* have worked. But it didn't. That's when I learned the hard truth: **Auth0's session token isn't the Google OAuth token**.
+
+I spent hours reading docs about Token Vault, trying to integrate `@auth0/ai-vercel`, convinced that was the "official" solution. But I kept hitting walls - my tenant didn't have the right configuration, the package needed credentials I didn't have access to, and the clock was ticking.
+
+Then, at 2 AM, scrolling through Auth0's Management API documentation, I found it: `user.identities[0].access_token`. When a user logs in with Google OAuth through Auth0, **Auth0 already stores the Google token in the identity object**. I didn't need Token Vault for this hackathon - I just needed to retrieve what was already there.
+
+The breakthrough wasn't just technical - it was architectural. Instead of storing OAuth tokens in my database (a security liability), I could retrieve them on-demand from Auth0's Management API. Zero database token storage. Zero-trust by design.
+
+When the first Gmail retrieval succeeded, and I saw real email subjects appear in the chat, I knew I had something special. This wasn't just a hackathon hack - it was a production-ready pattern that **every** AI agent platform needs.
+
+That 2 AM discovery became AgentGate's differentiator. While other projects store credentials in databases, we built on Auth0's identity foundation. That's the power of actually understanding the platform you're building on - sometimes the best solution is already there, waiting to be discovered.
+
+---
+
 ## Try It Yourself
 
-**GitHub:** [AgentGate Repository](https://github.com/yourusername/agentgate)
-**Demo Video:** [Watch the Demo](https://youtu.be/your-demo-video)
+**GitHub:** [AgentGate Repository](https://github.com/jamador47/AgentGate)
+**Live Demo:** [https://agentgate.up.railway.app](https://agentgate.up.railway.app) *(coming soon)*
 
 **Quick Start:**
 ```bash
-git clone https://github.com/yourusername/agentgate
+git clone https://github.com/jamador47/AgentGate
 cd agentgate
 npm install
 # Add .env.local with Auth0 credentials
