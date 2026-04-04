@@ -253,6 +253,10 @@ Be natural, helpful, and always display the actual data you receive from tools.`
           // Log each tool call for audit purposes
           toolCalls.forEach((tc: any, index: number) => {
             const result: any = toolResults[index];
+
+            // Debug: Log the raw tool call structure
+            console.log('🔍 Tool call args:', JSON.stringify(tc.args, null, 2));
+
             const auditEntry = {
               tool: tc.toolName,
               action: getToolAction(tc.toolName, tc.args || {}),
@@ -279,9 +283,16 @@ Be natural, helpful, and always display the actual data you receive from tools.`
     function getToolAction(toolName: string, args: any): string {
       switch (toolName) {
         case 'searchGmail':
-          return `Searched Gmail: "${args.query}" (${args.maxResults || 10} results)`;
+          const query = args?.query || args?.input?.query || '*';
+          const maxResults = args?.maxResults || args?.input?.maxResults || 10;
+          return `Searched Gmail: "${query}" (${maxResults} results)`;
         case 'getCalendarEvents':
-          return `Retrieved calendar events from ${new Date(args.startDate).toLocaleDateString()} to ${new Date(args.endDate).toLocaleDateString()}`;
+          const startDate = args?.startDate || args?.input?.startDate;
+          const endDate = args?.endDate || args?.input?.endDate;
+          if (startDate && endDate) {
+            return `Retrieved calendar events from ${new Date(startDate).toLocaleDateString()} to ${new Date(endDate).toLocaleDateString()}`;
+          }
+          return `Retrieved calendar events`;
         default:
           return `Called ${toolName}`;
       }
