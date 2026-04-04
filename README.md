@@ -514,10 +514,9 @@ Special thanks to:
 
 ## 📧 Contact
 
-**Hackathon Submission** - [Your Name]
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
-- Demo Video: [Watch Here](#)
+**Hackathon Submission** - Jossue Amador
+- GitHub: [@jamador47](https://github.com/jamador47)
+- Email: jfaa27@gmail.com
 
 ---
 
