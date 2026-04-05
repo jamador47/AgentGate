@@ -254,13 +254,8 @@ Be natural, helpful, and always display the actual data you receive from tools.`
           toolCalls.forEach((tc: any, index: number) => {
             const result: any = toolResults[index];
 
-            // Extract args - Vercel AI SDK v6 might nest them differently
-            const extractedArgs = tc.args || {};
-
-            // Log to understand structure
-            if (Object.keys(extractedArgs).length === 0 && tc.toolName === 'searchGmail') {
-              console.log('⚠️ tc.args is empty, full tc:', JSON.stringify(tc, null, 2));
-            }
+            // Extract args - Vercel AI SDK v6 stores them in tc.input
+            const extractedArgs = tc.input || tc.args || {};
 
             const auditEntry = {
               tool: tc.toolName,
