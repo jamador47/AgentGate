@@ -304,8 +304,10 @@ Dashboard → Fade to title card with links
   AgentGate
   Agent Governance Platform
 
-  GitHub: github.com/yourusername/agentgate
+  GitHub: github.com/jamador47/AgentGate
   Demo: agentgate.up.railway.app
+  Privacy: agentgate.up.railway.app/privacy
+  Terms: agentgate.up.railway.app/terms
   Built with Auth0 ❤️
   ```
 
