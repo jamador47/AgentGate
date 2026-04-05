@@ -162,6 +162,8 @@ Then I had the key insight: when users log in with Google OAuth through Auth0, *
 
 This became AgentGate's core security advantage: **zero token storage in our database**.
 
+**📍 See the Code:** [lib/auth0-ai.ts (Lines 4-65)](https://github.com/jamador47/AgentGate/blob/main/lib/auth0-ai.ts#L4-L65)
+
 ```typescript
 // Get Management API credentials
 const managementToken = await fetch(
@@ -225,6 +227,8 @@ The AI never got a chance to respond with the tool results.
 
 After diving deep into Vercel AI SDK v6 documentation (v6 has completely different patterns from v5), I discovered the `stopWhen` pattern:
 
+**📍 See the Code:** [app/api/chat/route.ts (Lines 238-242)](https://github.com/jamador47/AgentGate/blob/main/app/api/chat/route.ts#L238-L242)
+
 ```typescript
 import { streamText, stepCountIs } from 'ai';
 
@@ -250,6 +254,9 @@ Now the flow worked:
 The permissions panel was showing hardcoded mock connections. I created:
 
 **Backend:** `/api/connections` endpoint
+
+**📍 See the Code:** [app/api/connections/route.ts (Lines 1-70)](https://github.com/jamador47/AgentGate/blob/main/app/api/connections/route.ts#L1-L70)
+
 ```typescript
 // Fetch user identities from Auth0
 const userData = await managementAPI.getUser(userId);
@@ -313,6 +320,9 @@ export async function GET() {
 ```
 
 3. **Tool execution logging** in `onStepFinish`:
+
+**📍 See the Code:** [app/api/chat/route.ts (Lines 241-278)](https://github.com/jamador47/AgentGate/blob/main/app/api/chat/route.ts#L241-L278)
+
 ```typescript
 onStepFinish: async ({ toolCalls, toolResults }) => {
   toolCalls.forEach((tc, i) => {
@@ -408,9 +418,9 @@ Subtle issues that cost hours:
 
 ### Architecture Patterns
 1. **Separation of Concerns:**
-   - Auth logic in `lib/auth0.ts`
-   - Token management in `lib/auth0-ai.ts`
-   - Audit logging in `lib/audit-store.ts`
+   - Auth logic in [`lib/auth0.ts`](https://github.com/jamador47/AgentGate/blob/main/lib/auth0.ts)
+   - Token management in [`lib/auth0-ai.ts`](https://github.com/jamador47/AgentGate/blob/main/lib/auth0-ai.ts) ⭐ **Auth0 Management API**
+   - Audit logging in [`lib/audit-store.ts`](https://github.com/jamador47/AgentGate/blob/main/lib/audit-store.ts)
 
 2. **Progressive Enhancement:**
    - Started with mock data
