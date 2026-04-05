@@ -254,33 +254,18 @@ Be natural, helpful, and always display the actual data you receive from tools.`
           toolCalls.forEach((tc: any, index: number) => {
             const result: any = toolResults[index];
 
-            // Debug: Log the COMPLETE tool call structure
-            console.log('🔍 FULL Tool Call Object:', JSON.stringify(tc, null, 2));
-            console.log('🔍 Tool Call Args:', tc.args);
-            console.log('🔍 Tool Call Type:', typeof tc.args);
-
-            // The Vercel AI SDK might structure this differently
-            // Try multiple possible locations for the arguments
-            const actualArgs = tc.args || tc.arguments || tc.input || {};
-
-            console.log('🔍 Actual Args We\'re Using:', actualArgs);
-
             const auditEntry = {
               tool: tc.toolName,
-              action: getToolAction(tc.toolName, actualArgs),
+              action: getToolAction(tc.toolName, tc.args || {}),
               status: (result ? 'success' : 'error') as 'success' | 'error',
               scopes: getToolScopes(tc.toolName),
-              details: JSON.stringify(actualArgs, null, 2),
+              details: JSON.stringify(tc.args || {}, null, 2),
               result: result?.output || result,
               userId,
             };
 
             // Add to audit store
-            const addedLog = auditStore.addLog(auditEntry);
-            console.log('✅ Added audit log:', addedLog.id, '-', addedLog.action);
-
-            // Also log full entry for debugging
-            console.log('AUDIT_LOG_FULL:', JSON.stringify(auditEntry));
+            auditStore.addLog(auditEntry);
           });
         }
       },
